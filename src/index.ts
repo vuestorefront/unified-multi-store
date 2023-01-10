@@ -1,0 +1,1 @@
+export { multistoreExtension } from './extension';
