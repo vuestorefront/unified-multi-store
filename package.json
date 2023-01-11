@@ -32,7 +32,6 @@
     "@types/node": "^12.12.14",
     "@typescript-eslint/eslint-plugin": "^4.15.2",
     "@typescript-eslint/parser": "^4.15.2",
-    "@vsf-enterprise/sapcc-api": "^1.1.1",
     "@vue-storefront/core": "^2.7.5",
     "@vue-storefront/middleware": "^2.7.5",
     "@vue/eslint-config-typescript": "^7.0.0",
