@@ -1,2 +1,1 @@
-export { success } from './success';
-export { error } from './error';
+export { getConfig } from './getConfig';
