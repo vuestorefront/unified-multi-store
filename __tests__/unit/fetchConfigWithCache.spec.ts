@@ -14,20 +14,23 @@ describe('[MultiStoreExtension] fetchConfigWithCache utility function', () => {
       defaultCurrency: 'USD'
     }
   };
+  const cacheManager = {
+    get: jest.fn((key) => undefined),
+    set: jest.fn((key, value) => {})
+  };
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
 
   it('gets configuration from cache', () => {
-    const cacheManager = {
-      get: jest.fn((key) => {
-        return {
-          baseSiteId: 'electronics',
-          catalogId: 'electronicsProductCatalog',
-          catalogVersion: 'Online',
-          defaultLanguage: 'en',
-          defaultCurrency: 'USD'
-        };
-      }),
-      set: jest.fn()
-    };
+    cacheManager.get.mockReturnValue({
+      baseSiteId: 'electronics',
+      catalogId: 'electronicsProductCatalog',
+      catalogVersion: 'Online',
+      defaultLanguage: 'en',
+      defaultCurrency: 'USD'
+    });
 
     fetchConfigWithCache({ cacheManager, domain: DOMAIN, multistore });
 
@@ -36,10 +39,6 @@ describe('[MultiStoreExtension] fetchConfigWithCache utility function', () => {
   });
 
   it('fetches new configuration when cache expires ', () => {
-    const cacheManager = {
-      get: jest.fn((key) => undefined),
-      set: jest.fn((key, value) => {})
-    };
     multistore.fetchConfiguration.mockReturnValue(FETCH_RESPONSE);
     const STORE_CONFIG = Object.values(FETCH_RESPONSE)[0];
 
@@ -53,10 +52,6 @@ describe('[MultiStoreExtension] fetchConfigWithCache utility function', () => {
   });
 
   it('caches fetched configuration ', () => {
-    const cacheManager = {
-      get: jest.fn((key) => undefined),
-      set: jest.fn((key, value) => {})
-    };
     multistore.fetchConfiguration.mockReturnValue(FETCH_RESPONSE);
     const [cacheKey, cacheValue] = Object.entries(FETCH_RESPONSE)[0];
 
