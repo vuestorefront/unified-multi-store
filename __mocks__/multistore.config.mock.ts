@@ -6,18 +6,18 @@ export const mockMultistoreConfig = () => ({
   fetchConfiguration: jest.fn(({ domain }) => {
     return {
       'localhost:3000': {
-        baseSiteId: 'electronics',
-        catalogId: 'electronicsProductCatalog',
-        catalogVersion: 'Online',
-        defaultLanguage: 'en',
-        defaultCurrency: 'USD'
+        baseSiteId: 'localhost-electronics',
+        catalogId: 'localhost-electronicsProductCatalog',
+        catalogVersion: 'localhost-Online',
+        defaultLanguage: 'localhost-en',
+        defaultCurrency: 'localhost-USD'
       },
       'mydomain.io': {
-        baseSiteId: 'electronics',
-        catalogId: 'electronicsProductCatalog',
-        catalogVersion: 'Online',
-        defaultLanguage: 'en',
-        defaultCurrency: 'USD'
+        baseSiteId: 'mydomain-electronics',
+        catalogId: 'mydomain-electronicsProductCatalog',
+        catalogVersion: 'mydomain-Online',
+        defaultLanguage: 'mydomain-en',
+        defaultCurrency: 'mydomain-USD'
       }
     } as any;
   }),
@@ -35,13 +35,7 @@ export const mockMultistoreConfig = () => ({
   cacheManagerFactory: jest.fn(() => {
     return {
       get(key) {
-        return {
-          baseSiteId: 'electronics',
-          catalogId: 'electronicsProductCatalog',
-          catalogVersion: 'Online',
-          defaultLanguage: 'en',
-          defaultCurrency: 'USD'
-        } as any;
+        return undefined;
       },
       set(key, value) {
         return null as any;

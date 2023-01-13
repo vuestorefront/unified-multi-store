@@ -8,62 +8,8 @@ import { multistoreExtension } from '../../src/extension';
 describe('[MultiStoreExtension] Unified multi-store approach', () => {
   const mockedMiddlewareConfig = mockMiddlewareConfig();
 
-  describe('No extension app', () => {
-    let pureApp;
-
-    const noExtensionConfig = {
-      ...integrations.bootstraped,
-      configuration: mockedMiddlewareConfig
-    };
-
-    beforeAll(async () => {
-      pureApp = await createServer({
-        integrations: {
-          bootstraped: noExtensionConfig
-        }
-      });
-    });
-
-    describe('uses default configuration without extension', () => {
-      it('igrores x-forwarded-host header for server-to-server communication', async () => {
-        const { body } = await request(pureApp)
-          .post('/bootstraped/getConfig')
-          .set('x-forwarded-host', 'mydomain.io')
-          .set('host', 'mydomain.io')
-          .send([]);
-
-        expect(body.config).toEqual(
-          JSON.parse(JSON.stringify(noExtensionConfig.configuration))
-        );
-      });
-
-      it('ignores fallback to host header for server-to-server communication', async () => {
-        const { body } = await request(pureApp)
-          .post('/bootstraped/getConfig')
-          .set('x-forwarded-host', '')
-          .set('host', 'mydomain.io')
-          .send([]);
-
-        expect(body.config).toEqual(
-          JSON.parse(JSON.stringify(noExtensionConfig.configuration))
-        );
-      });
-
-      it('ignores origin header for client-to-server communication', async () => {
-        const { body } = await request(pureApp)
-          .post('/bootstraped/getConfig')
-          .set('origin', 'http://mydomain.io')
-          .send([]);
-
-        expect(body.config).toEqual(
-          JSON.parse(JSON.stringify(noExtensionConfig.configuration))
-        );
-      });
-    });
-  });
-
   describe('Extended app', () => {
-    let extendedApp: Express;
+    let app: Express;
 
     const bootstrapedConfig = {
       ...integrations.bootstraped,
@@ -72,47 +18,86 @@ describe('[MultiStoreExtension] Unified multi-store approach', () => {
     };
 
     beforeAll(async () => {
-      extendedApp = await createServer({
+      app = await createServer({
         integrations: {
           bootstraped: bootstrapedConfig
         }
       });
     });
 
-    describe('overwrites base configuration with store specific', () => {
+    describe('Domain: localhost:3000', () => {
+      const domain = 'localhost:3000';
+
+      const domainSpecificConfig = {
+        ...mockedMiddlewareConfig.multistore.fetchConfiguration({})[domain],
+        uri: 'uri'
+      };
+
       it('based on x-forwarded-host header for server-to-server communication', async () => {
-        const { body } = await request(extendedApp)
+        const { body } = await request(app)
           .post('/bootstraped/getConfig')
-          .set('x-forwarded-host', 'mydomain.io')
-          .set('host', 'mydomain.io')
+          .set('x-forwarded-host', domain)
+          .set('host', domain)
           .send([]);
 
-        expect(body.config).toEqual(
-          JSON.parse(JSON.stringify(bootstrapedConfig.configuration))
-        );
+        expect(body.config.api).toEqual(domainSpecificConfig);
       });
 
       it('based on fallback to host header for server-to-server communication', async () => {
-        const { body } = await request(extendedApp)
+        const { body } = await request(app)
           .post('/bootstraped/getConfig')
           .set('x-forwarded-host', '')
-          .set('host', 'mydomain.io')
+          .set('host', domain)
           .send([]);
 
-        expect(body.config).toEqual(
-          JSON.parse(JSON.stringify(bootstrapedConfig.configuration))
-        );
+        expect(body.config.api).toEqual(domainSpecificConfig);
       });
 
       it('based on origin header for client-to-server communication', async () => {
-        const { body } = await request(extendedApp)
+        const { body } = await request(app)
           .post('/bootstraped/getConfig')
-          .set('origin', 'http://mydomain.io')
+          .set('origin', `http://${domain}`)
           .send([]);
 
-        expect(body.config).toEqual(
-          JSON.parse(JSON.stringify(bootstrapedConfig.configuration))
-        );
+        expect(body.config.api).toEqual(domainSpecificConfig);
+      });
+    });
+
+    describe('Domain: mydomain.io', () => {
+      const domain = 'mydomain.io';
+
+      const domainSpecificConfig = {
+        ...mockedMiddlewareConfig.multistore.fetchConfiguration({})[domain],
+        uri: 'uri'
+      };
+
+      it('based on x-forwarded-host header for server-to-server communication', async () => {
+        const { body } = await request(app)
+          .post('/bootstraped/getConfig')
+          .set('x-forwarded-host', domain)
+          .set('host', domain)
+          .send([]);
+
+        expect(body.config.api).toEqual(domainSpecificConfig);
+      });
+
+      it('based on fallback to host header for server-to-server communication', async () => {
+        const { body } = await request(app)
+          .post('/bootstraped/getConfig')
+          .set('x-forwarded-host', '')
+          .set('host', domain)
+          .send([]);
+
+        expect(body.config.api).toEqual(domainSpecificConfig);
+      });
+
+      it('based on origin header for client-to-server communication', async () => {
+        const { body } = await request(app)
+          .post('/bootstraped/getConfig')
+          .set('origin', `http://${domain}`)
+          .send([]);
+
+        expect(body.config.api).toEqual(domainSpecificConfig);
       });
     });
   });
