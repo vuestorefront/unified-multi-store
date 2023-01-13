@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { mockMultistoreConfig } from '../../__mocks__/multistore.config.mock';
 import { validateMultistoreMethods } from '../../src/validate/validateMultistoreMethods';
-import { ERROR_MESSAGES } from '../../src/const';
+import { requiredMethodsErrors } from '../../src/validate/requiredMethodsErrors';
 
 describe('[MultiStoreExtension] validateMultistoreMethods utility function', () => {
   const multistore = mockMultistoreConfig();
@@ -19,7 +19,7 @@ describe('[MultiStoreExtension] validateMultistoreMethods utility function', () 
 
       validateMultistoreMethods(methodName, configToValidate as any);
     } catch (error) {
-      expect(error.message).toBe(ERROR_MESSAGES[methodName]);
+      expect(error.message).toBe(requiredMethodsErrors[methodName]);
     }
   });
 });
