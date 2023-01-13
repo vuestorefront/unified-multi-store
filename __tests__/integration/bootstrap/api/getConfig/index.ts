@@ -1,5 +1,5 @@
-export const getConfig = (conxtext) => {
+export const getConfig = (context) => {
   return {
-    config: conxtext.config
+    config: context.config
   };
 };
