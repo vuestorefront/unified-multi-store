@@ -33,7 +33,7 @@ describe('[MultiStoreExtension] fetchConfigWithCache utility function', () => {
     expect(res).toEqual(storeConfig);
   });
 
-  it('fetches new configuration there is no cache', () => {
+  it('fetches new configuration there is no cache, and caches it', () => {
     multistore.fetchConfiguration.mockReturnValue(FETCH_RESPONSE);
     const [domain, storeConfig] = Object.entries(FETCH_RESPONSE)[0];
 
