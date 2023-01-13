@@ -5,6 +5,13 @@
 export const mockMultistoreConfig = () => ({
   fetchConfiguration: jest.fn(({ domain }) => {
     return {
+      'localhost:3000': {
+        baseSiteId: 'electronics',
+        catalogId: 'electronicsProductCatalog',
+        catalogVersion: 'Online',
+        defaultLanguage: 'en',
+        defaultCurrency: 'USD'
+      },
       'mydomain.io': {
         baseSiteId: 'electronics',
         catalogId: 'electronicsProductCatalog',

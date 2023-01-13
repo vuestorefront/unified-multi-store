@@ -16,10 +16,9 @@ export const fetchConfigWithCache = ({
 
   const fetchedConfiguration = multistore.fetchConfiguration({ domain });
 
-  for (const [fetchedDomain, fetchedDomainConfiguration] of Object.entries(
-    fetchedConfiguration
-  )) {
-    cacheManager.set(fetchedDomain, fetchedDomainConfiguration);
+  for (const configDomain in fetchedConfiguration) {
+    const domainConfiguration = fetchedConfiguration[configDomain];
+    cacheManager.set(configDomain, domainConfiguration);
   }
 
   return fetchedConfiguration[domain];
