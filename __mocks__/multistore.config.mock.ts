@@ -11,6 +11,13 @@ export const mockMultistoreConfig = () => ({
         catalogVersion: 'Online',
         defaultLanguage: 'en',
         defaultCurrency: 'USD'
+      },
+      'mydomain.io': {
+        baseSiteId: 'electronics',
+        catalogId: 'electronicsProductCatalog',
+        catalogVersion: 'Online',
+        defaultLanguage: 'en',
+        defaultCurrency: 'USD'
       }
     } as any;
   }),
