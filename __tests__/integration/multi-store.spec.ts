@@ -25,7 +25,7 @@ describe('[MultiStoreExtension] Unified multi-store approach', () => {
       });
     });
 
-    describe('Domain: localhost:3000', () => {
+    describe('overwrites base config with store-specific config', () => {
       const localhosHeader = 'localhost:3000';
       const mydomainHeader = 'mydomain.io';
       const podHostname = 'vue-storefront:3000';
