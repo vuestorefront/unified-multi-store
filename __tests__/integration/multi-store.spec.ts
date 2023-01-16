@@ -26,78 +26,52 @@ describe('[MultiStoreExtension] Unified multi-store approach', () => {
     });
 
     describe('Domain: localhost:3000', () => {
-      const domain = 'localhost:3000';
+      const localhosHeader = 'localhost:3000';
+      const mydomainHeader = 'mydomain.io';
+      const podHostname = 'vue-storefront:3000';
 
-      const domainSpecificConfig = {
-        ...mockedMiddlewareConfig.multistore.fetchConfiguration({})[domain],
+      const localhostConfig = {
+        ...mockedMiddlewareConfig.multistore.fetchConfiguration({})[
+          localhosHeader
+        ],
+        uri: 'uri'
+      };
+
+      const mydomainConfig = {
+        ...mockedMiddlewareConfig.multistore.fetchConfiguration({})[
+          mydomainHeader
+        ],
         uri: 'uri'
       };
 
       it('based on x-forwarded-host header for server-to-server communication', async () => {
         const { body } = await request(app)
           .post('/bootstraped/getConfig')
-          .set('x-forwarded-host', domain)
-          .set('host', domain)
+          .set('x-forwarded-host', mydomainHeader)
+          .set('host', podHostname)
           .send([]);
 
-        expect(body.config.api).toEqual(domainSpecificConfig);
+        expect(body.config.api).toEqual(mydomainConfig);
       });
 
       it('based on fallback to host header for server-to-server communication', async () => {
         const { body } = await request(app)
           .post('/bootstraped/getConfig')
           .set('x-forwarded-host', '')
-          .set('host', domain)
+          .set('host', localhosHeader)
           .send([]);
 
-        expect(body.config.api).toEqual(domainSpecificConfig);
+        expect(body.config.api).toEqual(localhostConfig);
       });
 
       it('based on origin header for client-to-server communication', async () => {
         const { body } = await request(app)
           .post('/bootstraped/getConfig')
-          .set('origin', `http://${domain}`)
+          .set('origin', `http://${mydomainHeader}`)
+          .set('host', podHostname)
           .send([]);
 
-        expect(body.config.api).toEqual(domainSpecificConfig);
-      });
-    });
-
-    describe('Domain: mydomain.io', () => {
-      const domain = 'mydomain.io';
-
-      const domainSpecificConfig = {
-        ...mockedMiddlewareConfig.multistore.fetchConfiguration({})[domain],
-        uri: 'uri'
-      };
-
-      it('based on x-forwarded-host header for server-to-server communication', async () => {
-        const { body } = await request(app)
-          .post('/bootstraped/getConfig')
-          .set('x-forwarded-host', domain)
-          .set('host', domain)
-          .send([]);
-
-        expect(body.config.api).toEqual(domainSpecificConfig);
-      });
-
-      it('based on fallback to host header for server-to-server communication', async () => {
-        const { body } = await request(app)
-          .post('/bootstraped/getConfig')
-          .set('x-forwarded-host', '')
-          .set('host', domain)
-          .send([]);
-
-        expect(body.config.api).toEqual(domainSpecificConfig);
-      });
-
-      it('based on origin header for client-to-server communication', async () => {
-        const { body } = await request(app)
-          .post('/bootstraped/getConfig')
-          .set('origin', `http://${domain}`)
-          .send([]);
-
-        expect(body.config.api).toEqual(domainSpecificConfig);
+        expect(body.config.api).toEqual(mydomainConfig);
       });
     });
   });
