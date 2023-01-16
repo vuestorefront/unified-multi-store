@@ -143,7 +143,7 @@ module.exports = {
           defaultCurrency: 'USD'
         }
       },
-+     multistore
++    multistore
     }
   }
 };
