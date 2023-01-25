@@ -5,7 +5,7 @@ Unified multi-store approach for VSF eCommerce integrations.
 ## Getting started
 
 Unified multi-store is an extension for VSF middleware that overwrites the base configuration with a store-specific config.
-To setup multi-store in your VSF middleware:
+To set up multi-store in your VSF middleware:
 
 1. Import `multistoreExtension` from `@vsf-enterprise/multistore` package and extend the middleware config. SAP example:
 
@@ -50,7 +50,7 @@ module.exports = {
 
 2. Prepare multistore configuration. Create `multistore.config.js` file containing the following methods
 
-- `fetchConfiguration({ domain }): Record<string, StoreConfig>` - fetches store configuration. Method accepts domain as an argument and returns with the store-specific configuration based on the domains where the domain is an key and configuration is a value.
+- `fetchConfiguration({ domain }): Record<string, StoreConfig>` - fetches store configuration. The method accepts the domain as an argument and returns with the store-specific configuration based on the domains where the domain is a key and the configuration is a value.
 - `mergeConfigurations({ baseConfig, storeConfig }): StoreConfig` - overwrites base configuration with store-specific config.
 - `cacheManagerFactory(): { get: (key: string) => StoreConfig, set(key: string, value: StoreConfig)}` - creates cache manager with `get` and `set` methods.
 
@@ -64,14 +64,14 @@ const NodeCache = require('node-cache');
 module.exports = {
   fetchConfiguration(/* { domain } */) {
     return {
-      'mydomain.io': {
+      'my-apparel-domain.io': {
         baseSiteId: 'apparel-uk',
         catalogId: 'apparelProductCatalog',
         catalogVersion: 'Online',
         defaultLanguage: 'en',
         defaultCurrency: 'GBP'
       },
-      'localhost:3000': {
+      'my-electronics-domain.io': {
         baseSiteId: 'electronics',
         catalogId: 'electronicsProductCatalog',
         catalogVersion: 'Online',
@@ -141,10 +141,28 @@ module.exports = {
           catalogVersion: 'Online',
           defaultLanguage: 'en',
           defaultCurrency: 'USD'
-        }
-      },
-+    multistore
+        },
++       multistore
+      }
     }
   }
 };
 ```
+
+## Architecture
+
+### System context level
+
+![System context level](https://res.cloudinary.com/vue-storefront/image/upload/v1674577953/Unified%20multi-store/Integrations_Workspace_-_System_context_level_utxxzw.jpg)
+
+### Vue Storefront Integration container level
+
+![System container level](https://res.cloudinary.com/vue-storefront/image/upload/v1674577953/Unified%20multi-store/Integrations_Workspace_-_System_container_level_jbhk66.jpg)
+
+### Middleware component level
+
+![System component level](https://res.cloudinary.com/vue-storefront/image/upload/v1674577953/Unified%20multi-store/Integrations_Workspace_-_System_component_level_-_Middleware_with_multistore_1_at6dqq.jpg)
+
+### Unified multi-store sequence diagram
+
+![Sequence diagram](https://res.cloudinary.com/vue-storefront/image/upload/v1674577949/Unified%20multi-store/Unified_multi-store_1_kwbuu1.png)
