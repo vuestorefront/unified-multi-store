@@ -17,9 +17,4 @@ jobs:
           node-version: '16'
           cache: 'yarn'
 
-      # - name: Install dependencies
-      #   run: yarn --frozen-lockfile
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-
       - uses: JulienKode/pull-request-name-linter-action@v0.1.2
