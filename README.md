@@ -2,6 +2,14 @@
 
 Unified multi-store approach for VSF eCommerce integrations.
 
+## Limitations
+
+A unified multi-store solution was designed to work in VSF infrastructure. It requires 3 headers to work properly
+- `origin` for client-to-server communication,
+- `x-forwarded-host` for server-to-server communication,
+- `host` for server-to-server communication, as a fallback if there is no `x-forwarded-host`.
+Be sure that the client used to communicate with the middleware is adding those headers to the requests!
+
 ## Getting started
 
 Unified multi-store is an extension for VSF middleware that overwrites the base configuration with a store-specific config.
