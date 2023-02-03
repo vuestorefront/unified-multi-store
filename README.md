@@ -2,7 +2,7 @@
 
 Unified multi-store approach for VSF eCommerce integrations.
 
-## Limitations
+## Prerequisites
 
 A unified multi-store solution was designed to work in VSF infrastructure. It requires 3 headers to work properly
 - `origin` for client-to-server communication,
