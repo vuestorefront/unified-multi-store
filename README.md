@@ -15,13 +15,13 @@ Be sure that the client used to communicate with the middleware is adding those 
 Unified multi-store is an extension for VSF middleware that overwrites the base configuration with a store-specific config.
 To set up multi-store in your VSF middleware:
 
-1. Import `multistoreExtension` from `@vsf-enterprise/multistore` package and extend the middleware config. SAP example:
+1. Import `multistoreExtension` from `@vue-storefront/multistore` package and extend the middleware config. SAP example:
 
 ```diff
 # middleware.config.js
 
 require('dotenv').config();
-+ const { multistoreExtension } = require('@vsf-enterprise/multistore');
++ const { multistoreExtension } = require('@vue-storefront/multistore');
 
 module.exports = {
   integrations: {
@@ -121,7 +121,7 @@ module.exports = {
 
 require('dotenv').config();
 + const multistore = require('./multistore.config');
-const { multistoreExtension } = require('@vsf-enterprise/multistore');
+const { multistoreExtension } = require('@vue-storefront/multistore');
 
 module.exports = {
   integrations: {
