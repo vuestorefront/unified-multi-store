@@ -2,6 +2,10 @@
 
 Unified multi-store approach for VSF eCommerce integrations.
 
+## Repository archived
+
+Package has been moved to https://github.com/vuestorefront/vue-storefront.
+
 ## Prerequisites
 
 A unified multi-store solution was designed to work in VSF infrastructure. It requires 3 headers to work properly
